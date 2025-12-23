@@ -1,0 +1,92 @@
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# IDE files
+.idea
+.vscode
+*.swp
+*.swo
+*.swn
+.DS_Store
+
+# Environment files (will be injected at runtime)
+.env
+.env.*
+!.env.example
+
+# Node modules (will be built in container)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Vendor (will be built in container)
+vendor
+
+# Laravel specific
+storage/app/*
+!storage/app/.gitignore
+!storage/app/public
+storage/framework/cache/*
+!storage/framework/cache/.gitignore
+storage/framework/sessions/*
+!storage/framework/sessions/.gitignore
+storage/framework/testing/*
+!storage/framework/testing/.gitignore
+storage/framework/views/*
+!storage/framework/views/.gitignore
+storage/logs/*
+!storage/logs/.gitignore
+bootstrap/cache/*
+!bootstrap/cache/.gitignore
+
+# Testing
+tests
+phpunit.xml
+.phpunit.result.cache
+
+# Documentation
+README.md
+CHANGELOG.md
+*.md
+docs
+
+# Fly.io
+.fly
+
+# Build artifacts
+public/hot
+public/storage
+public/build
+public/css
+public/js
+public/mix-manifest.json
+
+# Cache
+.cache
+
+# Temporary files
+*.log
+*.tmp
+*.temp
+
+# Development test files
+test_*.php
+check_*.php
+apply_route_fix.php
+*.bat
+reset_database.sh
+start-server.bat
+START_SERVER.bat
+test_*.jpg
+test_*.png
+
+# Claude
+.claude
+
+# Important: DO NOT ignore fly-*.sh files (needed for deployment)
+!fly-*.sh

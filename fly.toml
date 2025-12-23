@@ -1,0 +1,55 @@
+# fly.toml app configuration file generated for backend-covre on 2025-12-23T19:06:36+07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'backend-covre'
+primary_region = 'sin'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[deploy]
+  release_command = 'php /var/www/html/artisan migrate --force'
+
+[env]
+  APP_DEBUG = 'false'
+  APP_ENV = 'production'
+  APP_URL = 'https://backend-covre.fly.dev'
+  BCRYPT_ROUNDS = '12'
+  CACHE_STORE = 'database'
+  DB_CONNECTION = 'pgsql'
+  FILESYSTEM_DISK = 'public'
+  LOG_CHANNEL = 'stderr'
+  LOG_LEVEL = 'info'
+  QUEUE_CONNECTION = 'database'
+  SESSION_DRIVER = 'cookie'
+  SESSION_SECURE_COOKIE = 'true'
+
+[[mounts]]
+  source = 'storage_data'
+  destination = '/var/www/html/storage/app'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [[http_service.checks]]
+    interval = '15s'
+    timeout = '10s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/up'
+    protocol = 'http'
+
+    [http_service.checks.headers]
+      Accept = 'application/json'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 512

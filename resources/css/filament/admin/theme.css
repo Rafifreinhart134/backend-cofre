@@ -1,0 +1,243 @@
+@import '/vendor/filament/filament/resources/css/theme.css';
+
+@config '../../../../tailwind.config.js';
+
+/* Covre Custom Theme - Green Branding */
+:root {
+    --covre-green: #06402B;
+    --covre-green-light: #0a5a3e;
+    --covre-green-dark: #042819;
+    --covre-accent: #10B981;
+}
+
+/* Login page customization */
+.fi-simple-layout {
+    background: linear-gradient(135deg, var(--covre-green) 0%, var(--covre-green-dark) 100%);
+}
+
+.fi-simple-main {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(6, 64, 43, 0.3);
+}
+
+/* Header branding */
+.fi-topbar {
+    background-color: var(--covre-green) !important;
+    border-bottom: 3px solid var(--covre-green-light);
+}
+
+.fi-topbar-item {
+    color: white !important;
+}
+
+/* Sidebar branding */
+.fi-sidebar {
+    background: linear-gradient(to bottom, var(--covre-green), var(--covre-green-dark));
+    border-right: 1px solid var(--covre-green-light);
+}
+
+.fi-sidebar-header {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fi-sidebar-nav {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.fi-sidebar-item-button {
+    color: rgba(255, 255, 255, 0.85) !important;
+    transition: all 0.2s ease;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: white !important;
+}
+
+.fi-sidebar-item-button.fi-active {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    border-left: 4px solid var(--covre-accent);
+}
+
+/* Force all sidebar navigation text to be white */
+.fi-sidebar-nav-item,
+.fi-sidebar-item,
+.fi-sidebar-item-label,
+.fi-sidebar-item span,
+.fi-sidebar-group-items a,
+.fi-sidebar-group-items button,
+.fi-sidebar-group-items span {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.fi-sidebar-group-label {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+/* Logo styling */
+.fi-logo {
+    filter: brightness(0) invert(1);
+    transition: transform 0.2s ease;
+}
+
+.fi-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Brand name styling - make it visible on dark sidebar */
+.fi-sidebar-header a,
+.fi-sidebar-header span,
+.fi-sidebar-header,
+[class*="fi-topbar-brand"],
+[class*="fi-sidebar-brand"] {
+    color: white !important;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* More specific brand text targeting */
+.fi-sidebar .fi-sidebar-header * {
+    color: white !important;
+}
+
+/* Brand logo container - add background for better visibility */
+.fi-sidebar-header .fi-logo {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+/* Primary buttons */
+.fi-btn-primary {
+    background-color: var(--covre-green);
+    border-color: var(--covre-green);
+}
+
+.fi-btn-primary:hover {
+    background-color: var(--covre-green-light);
+    border-color: var(--covre-green-light);
+}
+
+.fi-btn-primary:focus {
+    border-color: var(--covre-accent);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+/* Badge styling */
+.fi-badge-success {
+    background-color: var(--covre-accent);
+}
+
+/* Links */
+a.fi-link {
+    color: var(--covre-green);
+}
+
+a.fi-link:hover {
+    color: var(--covre-green-light);
+}
+
+/* Tables */
+.fi-table-header {
+    background-color: rgba(6, 64, 43, 0.05);
+}
+
+.fi-table-row:hover {
+    background-color: rgba(6, 64, 43, 0.02);
+}
+
+/* Forms */
+.fi-input:focus,
+.fi-select:focus,
+.fi-textarea:focus {
+    border-color: var(--covre-green);
+    box-shadow: 0 0 0 2px rgba(6, 64, 43, 0.1);
+}
+
+/* Success messages */
+.fi-notification-success {
+    border-left: 4px solid var(--covre-accent);
+}
+
+/* Stats/widgets */
+.fi-stats-card {
+    border-top: 3px solid var(--covre-green);
+}
+
+/* Navigation badges (notification counts) */
+.fi-sidebar-item-badge {
+    background-color: var(--covre-accent);
+    color: white;
+    font-weight: 600;
+}
+
+/* User menu */
+.fi-dropdown-list {
+    border: 1px solid rgba(6, 64, 43, 0.1);
+}
+
+.fi-dropdown-list-item:hover {
+    background-color: rgba(6, 64, 43, 0.05);
+}
+
+/* Custom scrollbar for sidebar */
+.fi-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.fi-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.fi-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.fi-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Page headers */
+.fi-header-heading {
+    color: var(--covre-green-dark);
+}
+
+/* Tabs */
+.fi-tabs-item.fi-active {
+    border-bottom-color: var(--covre-green);
+    color: var(--covre-green);
+}
+
+.fi-tabs-item:hover {
+    color: var(--covre-green-light);
+}
+
+/* Toggle switches */
+.fi-toggle.fi-checked {
+    background-color: var(--covre-green);
+}
+
+/* Checkboxes and radios */
+.fi-checkbox:checked,
+.fi-radio:checked {
+    background-color: var(--covre-green);
+    border-color: var(--covre-green);
+}
+
+/* Loading indicators */
+.fi-spinner {
+    color: var(--covre-green);
+}
+
+/* Breadcrumbs */
+.fi-breadcrumbs-item.fi-active {
+    color: var(--covre-green);
+}
