@@ -10,7 +10,7 @@ primary_region = 'sin'
   dockerfile = 'Dockerfile'
 
 [deploy]
-  release_command = 'php /var/www/html/artisan db:seed --class=CreateAdminSeeder --force'
+  release_command = 'php /var/www/html/artisan migrate --force'
 
 [env]
   APP_DEBUG = 'false'
