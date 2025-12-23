@@ -3,7 +3,16 @@
     "allow": [
       "Bash(dir:*)",
       "Bash(ls:*)",
-      "Bash(fly deploy:*)"
+      "Bash(fly deploy:*)",
+      "Bash(fly apps create:*)",
+      "Bash(fly postgres create:*)",
+      "Bash(fly postgres attach:*)",
+      "Bash(php artisan:*)",
+      "Bash(fly secrets set:*)",
+      "Bash(fly logs:*)",
+      "Bash(fly ssh console:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)"
     ]
   }
 }

@@ -24,6 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'is_admin',
         'bio',
         'avatar_url',
         'account_private',
@@ -69,6 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
             'account_private' => 'boolean',
             'notification_settings' => 'array',
             'badge_is_culinary_creator' => 'boolean',

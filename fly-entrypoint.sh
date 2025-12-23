@@ -14,11 +14,11 @@ if [ -n "$DATABASE_URL" ]; then
     sleep 5
 fi
 
-# Run Laravel optimizations
+# Run Laravel optimizations (skip if migrations haven't run yet)
 echo "Caching Laravel configuration..."
-php /var/www/html/artisan config:cache
-php /var/www/html/artisan route:cache
-php /var/www/html/artisan view:cache
+php /var/www/html/artisan config:cache || true
+php /var/www/html/artisan route:cache || true
+php /var/www/html/artisan view:cache || true
 
 # Create storage link if not exists
 if [ ! -L /var/www/html/public/storage ]; then
