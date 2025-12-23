@@ -12,7 +12,15 @@
       "Bash(fly logs:*)",
       "Bash(fly ssh console:*)",
       "Bash(curl:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(composer show:*)",
+      "Bash(fly status:*)",
+      "Bash(fly machine start:*)",
+      "Bash(fly machine restart:*)",
+      "Bash(fly ssh sftp shell:*)",
+      "Bash(fly postgres connect:*)",
+      "Bash(git push:*)"
     ]
   }
 }
