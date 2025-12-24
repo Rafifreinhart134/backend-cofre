@@ -37,7 +37,10 @@
       "Bash(timeout 5 bash:*)",
       "Bash(php direct-db-fix.php:*)",
       "Bash(DB_HOST=127.0.0.1 DB_PORT=5432 DB_DATABASE=backend_covre DB_USERNAME=backend_covre DB_PASSWORD=7WWmNlpZQUt4ZBX DB_CONNECTION=pgsql php artisan db:monitor:*)",
-      "Bash(echo:*)"
+      "Bash(echo:*)",
+      "Bash(Select-String \"100\")",
+      "Bash(Measure-Object)",
+      "Bash(xargs:*)"
     ]
   }
 }
