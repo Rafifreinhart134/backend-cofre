@@ -35,6 +35,7 @@ Route::post('/ai/scan-test', [AiController::class, 'scan']);
 Route::get('/videos', [VideoController::class, 'index'])->middleware('throttle:60,1'); // 60 requests per minute
 Route::get('/videos/search', [VideoController::class, 'search'])->middleware('throttle:30,1'); // 30 searches per minute
 Route::get('/search', [SearchController::class, 'search'])->middleware('throttle:30,1'); // 30 searches per minute
+Route::get('/search/trending', [SearchController::class, 'getTrending'])->middleware('throttle:60,1'); // Get trending searches
 // ========================================================================
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -88,6 +89,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/videos/{video}/not-interested', [VideoController::class, 'notInterested']);
     Route::post('/videos/{video}/report', [VideoController::class, 'report']);
     Route::post('/videos/{video}/share', [VideoController::class, 'shareToFriend']);
+
+    // Search
+    Route::post('/search/log', [SearchController::class, 'logSearch'])->middleware('throttle:60,1');
+    Route::get('/search/recent', [SearchController::class, 'getRecentSearches'])->middleware('throttle:60,1');
+    Route::delete('/search/history', [SearchController::class, 'clearHistory'])->middleware('throttle:10,1');
 
     // Friends
     Route::get('/friends', [UserController::class, 'friends']);
