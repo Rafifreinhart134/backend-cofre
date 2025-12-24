@@ -40,7 +40,15 @@
       "Bash(echo:*)",
       "Bash(Select-String \"100\")",
       "Bash(Measure-Object)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(wsl --list:*)",
+      "Bash(wsl cd \"/mnt/c/Users/Daffa/OneDrive/Desktop/backend-covre\" '&&' fly deploy --app backend-covre)",
+      "Bash(wsl bash -c \"cd /mnt/c/Users/Daffa/OneDrive/Desktop/backend-covre && fly deploy --app backend-covre\")",
+      "Bash(git clone:*)",
+      "Bash(git pull:*)",
+      "Bash(git stash:*)",
+      "Bash(Select-Object -Last 30)",
+      "Bash(git reset:*)"
     ]
   }
 }
