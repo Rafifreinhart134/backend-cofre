@@ -26,6 +26,10 @@ if [ ! -L /var/www/html/public/storage ]; then
     php /var/www/html/artisan storage:link || true
 fi
 
+# Publish Filament assets
+echo "Publishing Filament assets..."
+php /var/www/html/artisan filament:assets || true
+
 # Set correct permissions
 echo "Setting file permissions..."
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true

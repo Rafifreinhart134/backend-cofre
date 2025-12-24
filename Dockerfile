@@ -30,10 +30,11 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libfreetype6-dev \
     libzip-dev \
+    libicu-dev \
     unzip \
     libpq-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_pgsql zip bcmath opcache \
+    && docker-php-ext-install gd pdo pdo_pgsql zip bcmath opcache intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Configure PHP for production
