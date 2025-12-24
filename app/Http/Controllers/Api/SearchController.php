@@ -89,13 +89,10 @@ class SearchController extends Controller
             });
         }
 
-        // Search videos by description or menu data
+        // Search videos by menu data (name, description, ingredients, etc.)
         $videos = Video::with('user:id,name')
             ->withCount(['likes', 'comments', 'views'])
-            ->where(function ($q) use ($query) {
-                $q->where('description', 'LIKE', "%{$query}%")
-                  ->orWhere('menu_data', 'LIKE', "%{$query}%");
-            })
+            ->where('menu_data', 'LIKE', "%{$query}%")
             ->orderBy('created_at', 'desc')
             ->limit(20)
             ->get();
