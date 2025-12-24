@@ -127,13 +127,12 @@ class SearchController extends Controller
             });
         }
 
-        // Log the search query (non-blocking)
-        try {
-            SearchLog::logSearch($query, $currentUserId, 'general', $request->ip());
-        } catch (\Exception $e) {
-            // Silent fail - don't break search if logging fails
-            Log::error('Search logging failed: ' . $e->getMessage());
-        }
+        // TODO: Re-enable logging after troubleshooting
+        // try {
+        //     SearchLog::logSearch($query, $currentUserId, 'general', $request->ip());
+        // } catch (\Exception $e) {
+        //     Log::error('Search logging failed: ' . $e->getMessage());
+        // }
 
         return response()->json([
             'users' => $users,
