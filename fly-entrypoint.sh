@@ -35,6 +35,51 @@ echo "Setting file permissions..."
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true
 chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true
 
+# Configure Nginx for large file uploads
+echo "Configuring Nginx for large file uploads..."
+cat > /etc/nginx/sites-enabled/default << 'EOF'
+server {
+    listen 8080;
+    server_name _;
+    root /var/www/html/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+
+    charset utf-8;
+
+    # Allow uploads up to 100MB
+    client_max_body_size 100M;
+    client_body_timeout 300;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_read_timeout 300;
+        fastcgi_send_timeout 300;
+        fastcgi_buffering off;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+EOF
+
 echo "Starting services via supervisor..."
 # Start supervisor which will manage PHP-FPM, Nginx, and Queue Worker
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/laravel.conf
