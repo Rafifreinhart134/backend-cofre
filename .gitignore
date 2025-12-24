@@ -21,3 +21,8 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+check-users.b64
+check-users.php
+direct-db-fix.php
+query-db.php
+reset-admin.php

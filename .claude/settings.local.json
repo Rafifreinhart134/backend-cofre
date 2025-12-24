@@ -20,7 +20,24 @@
       "Bash(fly machine restart:*)",
       "Bash(fly ssh sftp shell:*)",
       "Bash(fly postgres connect:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(rm:*)",
+      "Bash(git update-index:*)",
+      "Bash(git config:*)",
+      "Bash(fly apps:*)",
+      "Bash(fly secrets list:*)",
+      "Bash(php reset-admin.php:*)",
+      "Bash(php check-users.php:*)",
+      "Bash(cat:*)",
+      "Bash($content = Get-Content check-users.b64 -Raw)",
+      "Bash(Get-Content:*)",
+      "Bash(ForEach-Object { $_ -replace \"''\", \"''\"\"''\"\"''\" })",
+      "Bash(Set-Content query-db-escaped.txt)",
+      "Bash(fly proxy:*)",
+      "Bash(timeout 5 bash:*)",
+      "Bash(php direct-db-fix.php:*)",
+      "Bash(DB_HOST=127.0.0.1 DB_PORT=5432 DB_DATABASE=backend_covre DB_USERNAME=backend_covre DB_PASSWORD=7WWmNlpZQUt4ZBX DB_CONNECTION=pgsql php artisan db:monitor:*)",
+      "Bash(echo:*)"
     ]
   }
 }
