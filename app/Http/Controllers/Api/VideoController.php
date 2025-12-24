@@ -45,8 +45,11 @@ class VideoController extends Controller
             if ($driver === 'sqlite') {
                 // SQLite: use MAX and julianday for date calculations
                 $recencyBoost = 'MAX(0, 100 - CAST(((julianday("now") - julianday(videos.created_at)) * 24) AS INTEGER))';
+            } elseif ($driver === 'pgsql') {
+                // PostgreSQL: use GREATEST and EXTRACT(EPOCH FROM ...)
+                $recencyBoost = 'GREATEST(0, 100 - FLOOR(EXTRACT(EPOCH FROM (NOW() - videos.created_at))/3600))';
             } else {
-                // MySQL/PostgreSQL: use GREATEST and TIMESTAMPDIFF
+                // MySQL: use GREATEST and TIMESTAMPDIFF
                 $recencyBoost = 'GREATEST(0, 100 - TIMESTAMPDIFF(HOUR, videos.created_at, NOW()))';
             }
 
