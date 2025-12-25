@@ -180,25 +180,31 @@ class VideoController extends Controller
             ], 500);
         }
 
-        // DEADLINE MODE: FORCE AUTO-APPROVE - Video langsung muncul di feed
-        // Status HARDCODED ke 'approved' agar video langsung tampil tanpa moderasi
-
+        // Create video record with pending status
+        // Video will be approved after processing (auto-cut + compression)
         $video = Video::create([
             'user_id' => $user->id,
             's3_url' => $videoUrl,  // Local storage URL (we keep column name for compatibility)
             'thumbnail_url' => $thumbnailUrl,
             'menu_data' => $request->menu_data,
-            'status' => 'approved', // HARDCODE INI AGAR LANGSUNG MUNCUL
+            'status' => $mediaType === 'image' ? 'approved' : 'pending', // Images approved immediately, videos processed first
         ]);
+
+        // Dispatch video processing job (auto-cut to 60s + compress to 480p)
+        // Job will approve video automatically after processing
+        if ($mediaType === 'video') {
+            \App\Jobs\ProcessVideoUpload::dispatch($video, $videoPath);
+        }
 
         // Clear video feed cache when new video is uploaded
         $this->clearVideoFeedCache();
 
-        $successMessage = $mediaType === 'image' ? 'Foto berhasil diupload!' : 'Video berhasil diupload!';
+        $successMessage = $mediaType === 'image' ? 'Foto berhasil diupload!' : 'Video berhasil diupload dan sedang diproses!';
 
         return response()->json([
             'message' => $successMessage,
             'video' => $video,
+            'processing' => $mediaType === 'video',
         ], 201);
     }
 
@@ -396,18 +402,37 @@ class VideoController extends Controller
         }
 
         try {
-            // Delete video and thumbnail from R2 storage
+            // Delete video and thumbnail from local storage
+            // Check if using S3/R2 or local storage
+            $storageDriver = config('filesystems.default');
+
             if ($video->s3_url) {
-                // Extract path from full URL
-                $videoPath = parse_url($video->s3_url, PHP_URL_PATH);
-                $videoPath = ltrim($videoPath, '/');
-                Storage::disk('s3')->delete($videoPath);
+                if ($storageDriver === 's3') {
+                    // Delete from S3/R2
+                    $videoPath = parse_url($video->s3_url, PHP_URL_PATH);
+                    $videoPath = ltrim($videoPath, '/');
+                    Storage::disk('s3')->delete($videoPath);
+                } else {
+                    // Delete from local storage
+                    $videoPath = str_replace('/storage/', '', parse_url($video->s3_url, PHP_URL_PATH));
+                    if (Storage::disk('public')->exists($videoPath)) {
+                        Storage::disk('public')->delete($videoPath);
+                    }
+                }
             }
 
             if ($video->thumbnail_url) {
-                $thumbnailPath = parse_url($video->thumbnail_url, PHP_URL_PATH);
-                $thumbnailPath = ltrim($thumbnailPath, '/');
-                Storage::disk('s3')->delete($thumbnailPath);
+                if ($storageDriver === 's3') {
+                    $thumbnailPath = parse_url($video->thumbnail_url, PHP_URL_PATH);
+                    $thumbnailPath = ltrim($thumbnailPath, '/');
+                    Storage::disk('s3')->delete($thumbnailPath);
+                } else {
+                    // Delete from local storage
+                    $thumbnailPath = str_replace('/storage/', '', parse_url($video->thumbnail_url, PHP_URL_PATH));
+                    if (Storage::disk('public')->exists($thumbnailPath)) {
+                        Storage::disk('public')->delete($thumbnailPath);
+                    }
+                }
             }
 
             // Delete video record from database (cascade will delete related records)
@@ -453,6 +478,35 @@ class VideoController extends Controller
 
         return response()->json([
             'message' => 'Video berhasil diposting ulang',
+        ]);
+    }
+
+    /**
+     * Undo repost a video
+     */
+    public function undoRepost(Request $request, $videoId)
+    {
+        $video = Video::findOrFail($videoId);
+        $user = $request->user();
+
+        // Find existing repost
+        $existingRepost = \App\Models\Repost::where('user_id', $user->id)
+            ->where('original_video_id', $video->id)
+            ->first();
+
+        if (!$existingRepost) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda belum memposting ulang video ini',
+            ], 400);
+        }
+
+        // Delete repost record
+        $existingRepost->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Repost berhasil dibatalkan',
         ]);
     }
 

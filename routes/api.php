@@ -86,6 +86,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Share & Social Actions
     Route::post('/videos/{video}/repost', [VideoController::class, 'repost']);
+    Route::delete('/videos/{video}/repost', [VideoController::class, 'undoRepost']);
     Route::post('/videos/{video}/not-interested', [VideoController::class, 'notInterested']);
     Route::post('/videos/{video}/report', [VideoController::class, 'report']);
     Route::post('/videos/{video}/share', [VideoController::class, 'shareToFriend']);

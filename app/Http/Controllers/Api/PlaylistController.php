@@ -162,8 +162,8 @@ class PlaylistController extends Controller
 
         $video = Video::findOrFail($request->video_id);
 
-        // Check if video is already in playlist
-        if ($playlist->videos()->where('video_id', $video->id)->exists()) {
+        // Check if video is already in playlist (using wherePivot for many-to-many)
+        if ($playlist->videos()->where('videos.id', $video->id)->exists()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Video sudah ada di playlist',

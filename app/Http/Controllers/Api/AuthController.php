@@ -17,12 +17,32 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:30|regex:/^[a-zA-Z0-9._]+$/|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Check username uniqueness with custom error code
+        if (User::where('username', $request->username)->exists()) {
+            return response()->json([
+                'success' => false,
+                'error_code' => 'USERNAME_EXISTS',
+                'message' => 'Username sudah digunakan',
+            ], 422);
+        }
+
+        // Check email uniqueness with custom error code
+        if (User::where('email', $request->email)->exists()) {
+            return response()->json([
+                'success' => false,
+                'error_code' => 'EMAIL_EXISTS',
+                'message' => 'Email sudah digunakan',
+            ], 422);
+        }
+
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

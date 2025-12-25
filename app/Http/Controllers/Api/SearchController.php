@@ -90,9 +90,25 @@ class SearchController extends Controller
         }
 
         // Search videos by menu data (name, description, ingredients, etc.)
+        // Optimize hashtag search: handle both "#food" and "food"
+        $searchQuery = $query;
+        $searchWithoutHash = ltrim($query, '#');
+
         $videos = Video::with('user:id,name')
             ->withCount(['likes', 'comments', 'views'])
-            ->where('menu_data', 'LIKE', "%{$query}%")
+            ->where(function ($q) use ($searchQuery, $searchWithoutHash) {
+                // Search for exact query
+                $q->where('menu_data', 'LIKE', "%{$searchQuery}%");
+
+                // If query starts with #, also search without #
+                if (str_starts_with($searchQuery, '#')) {
+                    $q->orWhere('menu_data', 'LIKE', "%{$searchWithoutHash}%");
+                }
+                // If query doesn't have #, also search with #
+                else {
+                    $q->orWhere('menu_data', 'LIKE', "%#{$searchQuery}%");
+                }
+            })
             ->orderBy('created_at', 'desc')
             ->limit(20)
             ->get();

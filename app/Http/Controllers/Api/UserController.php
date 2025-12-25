@@ -132,14 +132,41 @@ class UserController extends Controller
 
         $request->validate([
             'name' => 'sometimes|string|max:255',
+            'username' => 'sometimes|string|max:30|regex:/^[a-zA-Z0-9._]+$/|unique:users,username,' . $user->id,
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'bio' => 'sometimes|string|max:150|nullable',
             'account_type' => 'sometimes|in:regular,creator',
             'website' => 'nullable|url|max:500',
         ]);
 
+        // Check username uniqueness with custom error code
+        if ($request->has('username') && $request->username !== $user->username) {
+            if (User::where('username', $request->username)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'error_code' => 'USERNAME_EXISTS',
+                    'message' => 'Username sudah digunakan',
+                ], 422);
+            }
+        }
+
+        // Check email uniqueness with custom error code
+        if ($request->has('email') && $request->email !== $user->email) {
+            if (User::where('email', $request->email)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'error_code' => 'EMAIL_EXISTS',
+                    'message' => 'Email sudah digunakan',
+                ], 422);
+            }
+        }
+
         if ($request->has('name')) {
             $user->name = $request->name;
+        }
+
+        if ($request->has('username')) {
+            $user->username = $request->username;
         }
 
         if ($request->has('email')) {
