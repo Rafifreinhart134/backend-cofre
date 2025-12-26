@@ -81,5 +81,18 @@ server {
 EOF
 
 echo "Starting services via supervisor..."
+# Create main supervisord config that includes our Laravel config
+cat > /etc/supervisor/supervisord.conf << 'SUPERVISORD_EOF'
+[supervisord]
+nodaemon=true
+user=root
+logfile=/dev/stdout
+logfile_maxbytes=0
+pidfile=/var/run/supervisord.pid
+
+[include]
+files = /etc/supervisor/conf.d/*.conf
+SUPERVISORD_EOF
+
 # Start supervisor which will manage PHP-FPM, Nginx, and Queue Worker
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/laravel.conf
+exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
