@@ -39,7 +39,7 @@ chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache || true
 echo "Configuring Nginx for large file uploads..."
 cat > /etc/nginx/sites-enabled/default << 'EOF'
 server {
-    listen 8080;
+    listen 0.0.0.0:8080;
     server_name _;
     root /var/www/html/public;
 
